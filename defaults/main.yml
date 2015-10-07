@@ -1,0 +1,3 @@
+---
+# defaults file for ansible-postgis3d
+build_directory: "{{ ansible_env.HOME }}/postgis3d_build/"

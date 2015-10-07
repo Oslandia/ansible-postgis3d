@@ -1,0 +1,140 @@
+---
+# tasks file for ansible-postgis3d
+- name: Creating the build directory
+  file: path={{ build_directory }} state=directory
+
+- name: Configure the PostgreSQL APT repository
+  apt_repository: repo="deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_lsb.codename }}-pgdg main"
+                  state=present
+  become: yes
+
+- apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
+           state=present
+           id=ACCC4CF8
+  become: yes
+
+- name: Installing dependencies
+  action: apt pkg={{ item }} state=present update_cache=yes
+  become: yes
+  with_items:
+    - postgresql-9.4
+    - postgresql-server-dev-9.4
+    - build-essential
+    - autoconf
+    - cmake
+    - docbook-mathml
+    - docbook-xsl
+    - libboost-dev
+    - libboost-thread-dev
+    - libboost-filesystem-dev
+    - libboost-timer-dev
+    - libboost-iostreams-dev
+    - libboost-program-options-dev
+    - libcunit1-dev
+    - libgdal-dev
+    - libgeos++-dev
+    - libgeotiff-dev
+    - libgmp-dev
+    - libjson0-dev
+    - libjson-c-dev
+    - liblas-dev
+    - libmpfr-dev
+    - libopenscenegraph-dev
+    - libpq-dev
+    - libproj-dev
+    - libxml2-dev
+    - xsltproc
+    - xz-utils
+
+###### CGAL
+
+- name: Install CGAL from packages
+  apt: pkg=libcgal-dev
+  when: ansible_distribution_release != "trusty"
+  become: yes
+
+- name: Get CGAL source code
+  get_url: url=https://github.com/CGAL/cgal/releases/download/releases/CGAL-4.6.3/CGAL-4.6.3.tar.xz
+           dest={{ build_directory }}
+  when: ansible_distribution_release == "trusty"
+
+- shell: tar -Jxf CGAL-4.6.3.tar.xz
+        chdir={{ build_directory}}
+        creates={{ build_directory}}/CGAL-4.6.3
+  when: ansible_distribution_release == "trusty"
+
+- shell: cmake . && make -j{{ ansible_processor_cores }}
+         chdir={{ build_directory }}/CGAL-4.6.3
+  when: ansible_distribution_release == "trusty"
+
+- shell: make install
+         chdir={{ build_directory }}/CGAL-4.6.3
+  become: yes
+  when: ansible_distribution_release == "trusty"
+
+
+###### SFCGAL
+
+- name: get sfcgal code
+  get_url: url=https://github.com/Oslandia/SFCGAL/archive/v1.2.0.tar.gz
+           dest={{ build_directory }}/sfcgal.tar.gz
+
+- shell: tar -xzf sfcgal.tar.gz
+         chdir={{ build_directory}}
+         creates={{ build_directory}}/SFCGAL-1.2.0
+
+- shell: cmake . && make -j{{ ansible_processor_cores }}
+         chdir={{ build_directory }}/SFCGAL-1.2.0
+
+- shell: make install
+         chdir={{ build_directory }}/SFCGAL-1.2.0
+  become: yes
+
+###### POSTGIS
+
+
+- get_url: url=http://download.osgeo.org/postgis/source/postgis-2.1.8.tar.gz
+            dest={{ build_directory }}/
+
+- shell: tar -xzf postgis-2.1.8.tar.gz
+         chdir={{ build_directory }}
+         creates={{ build_directory}}/postgis-2.1.8
+
+- shell: ./configure && make -j{{ ansible_processor_cores }}
+         chdir={{ build_directory }}/postgis-2.1.8/
+
+- shell: make install
+         chdir={{ build_directory }}/postgis-2.1.8/
+  become: yes
+
+
+###### POINTCLOUD
+
+- get_url: url=https://github.com/pgpointcloud/pointcloud/archive/v1.0.1.tar.gz
+           dest={{ build_directory }}/
+
+- shell: tar -xvf pointcloud-1.0.1.tar.gz
+         chdir={{ build_directory }}
+         creates={{ build_directory}}/pointcloud-1.0.1
+
+- shell: ./autogen.sh && ./configure && make -j{{ ansible_processor_cores }}
+         chdir={{ build_directory }}/pointcloud-1.0.1
+
+- shell: make install
+         chdir={{ build_directory }}/pointcloud-1.0.1
+  become: yes
+
+###### PDAL
+
+- get_url: url=https://github.com/PDAL/PDAL/archive/1.0.1.tar.gz
+           dest={{ build_directory }}/
+
+- shell: tar -xvf PDAL-1.0.1.tar.gz
+         chdir={{ build_directory }}
+
+- shell: cmake . && make -j{{ ansible_processor_cores }}
+         chdir={{ build_directory }}/PDAL-1.0.1
+
+- shell: make install
+         chdir={{ build_directory }}/PDAL-1.0.1
+  become: yes
