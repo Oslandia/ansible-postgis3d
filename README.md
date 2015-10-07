@@ -47,7 +47,7 @@ Now, it's your task to configure postgresql, pg_hba.conf etc...
 
 * If you want to checkout the role into your ansible role path for remote provisioning:
 
-        ansible-galaxy install oslandia.postgis3d
+        ansible-galaxy install ldgeo.postgis3d
 
 License
 -------
