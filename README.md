@@ -12,7 +12,7 @@ Versions installed:
 - sfcgal **1.2.0** compiled release from github
 - pointcloud **1.0.1** compiled release from github
 - pdal **1.0.1** compiled release from github
-- postgis **2.1.8** compiled release from osgeo
+- postgis **2.2.0** compiled release from osgeo
 
 Requirements
 ------------
@@ -25,13 +25,20 @@ Role Variables
 - build_directory: location to where the sources will be downloaded and compiled
 (should be a non superuser directory)
 
+The next variables could be overrided if you need some specific versions:
+
+    - postgis_version
+    - sfcgal_version
+    - pointcloud_version
+    - pdal_version
+
 Dependencies
 ------------
 
 - None
 
-Example Playbook
-----------------
+How to use it
+-------------
 
 * Testing the role with vagrant is as simple as:
 

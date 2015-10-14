@@ -1,3 +1,7 @@
 ---
 # defaults file for ansible-postgis3d
 build_directory: "{{ ansible_env.HOME }}/postgis3d_build/"
+postgis_version: 2.2.0
+sfcgal_version: 1.2.0
+pointcloud_version: 1.0.1
+pdal_version: 1.0.1
