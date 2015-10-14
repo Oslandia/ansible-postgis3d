@@ -1,0 +1,11 @@
+# language setting
+language: python
+
+python:
+    - 2.7
+
+install:
+  - pip install ansible==1.9.4
+
+script:
+  - ansible-playbook -i 'localhost,' -c local test.yml
