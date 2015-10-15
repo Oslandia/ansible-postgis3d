@@ -1,6 +1,8 @@
 Ansible-PostGIS3D
 =================
 
+[![Shippable](https://img.shields.io/shippable/561e5c991895ca44741dc1c7.svg?style=flat)]()
+
 This role will install PostGIS with 3D support (sfcgal) and
 pointcloud extension.
 
