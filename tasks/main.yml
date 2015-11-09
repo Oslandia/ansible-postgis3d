@@ -90,6 +90,9 @@
          chdir={{ build_directory }}/SFCGAL-{{ sfcgal_version }}
   become: yes
 
+- command: ldconfig
+  become: yes
+
 ###### POSTGIS
 
 
