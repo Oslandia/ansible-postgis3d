@@ -1,5 +1,9 @@
 ---
 # tasks file for ansible-postgis3d
+- name: Installing lsb-release
+  action: apt pkg=lsb-release state=present update_cache=yes
+  become: yes
+
 - name: Creating the build directory
   file: path={{ build_directory }} state=directory
 
@@ -13,8 +17,13 @@
                   state=present
   become: yes
 
+- apt_repository: repo="ppa:v-launchpad-jochen-sprickerhof-de/pcl"
+  when: ansible_distribution_release == "trusty"
+  become: yes
+
+
 - name: Installing dependencies
-  action: apt pkg={{ item }} state=present update_cache=yes
+  action: apt pkg={{ item }} state=present
   become: yes
   with_items:
     - postgresql-9.4
@@ -45,6 +54,15 @@
     - libxml2-dev
     - xsltproc
     - xz-utils
+
+
+- apt: name=libpcl-dev
+  when: ansible_distribution_release != "trusty"
+  become: yes
+
+- apt: name=libpcl-all-dev
+  when: ansible_distribution_release == "trusty"
+  become: yes
 
 ###### CGAL
 
@@ -135,7 +153,7 @@
 - shell: tar -xvf PDAL-{{ pdal_version }}.tar.gz
          chdir={{ build_directory }}
 
-- shell: cmake . && make -j{{ ansible_processor_cores }}
+- shell: cmake -DBUILD_PLUGIN_PCL=ON . && make -j{{ ansible_processor_cores }}
          chdir={{ build_directory }}/PDAL-{{ pdal_version }}
 
 - shell: make install
