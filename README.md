@@ -11,7 +11,7 @@ Target Platform: tested on debian (jessie and sid) and ubuntu trusty
 Versions installed:
 
 - postgresql **9.4.4** from the official postgresql repository
-- sfcgal **1.2.1** compiled release from github
+- sfcgal **1.2.2** compiled release from github
 - pointcloud **1.0.1** compiled release from github
 - pdal **1.0.1** compiled release from github
 - postgis **2.2.0** compiled release from osgeo
