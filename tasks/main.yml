@@ -81,7 +81,7 @@
         creates={{ build_directory}}/CGAL-4.6.3
   when: ansible_distribution_release == "trusty"
 
-- shell: cmake . && make -j{{ ansible_processor_cores }}
+- shell: cmake . && make -j{{ ansible_processor_vcpus }}
          chdir={{ build_directory }}/CGAL-4.6.3
   when: ansible_distribution_release == "trusty"
 
@@ -101,7 +101,7 @@
          chdir={{ build_directory}}
          creates={{ build_directory}}/SFCGAL-{{ sfcgal_version }}
 
-- shell: cmake . && make -j{{ ansible_processor_cores }}
+- shell: cmake . && make -j{{ ansible_processor_vcpus }}
          chdir={{ build_directory }}/SFCGAL-{{ sfcgal_version }}
 
 - shell: make install
@@ -138,7 +138,7 @@
          chdir={{ build_directory }}
          creates={{ build_directory}}/pointcloud-{{ pointcloud_version }}
 
-- shell: ./autogen.sh && ./configure && make -j{{ ansible_processor_cores }}
+- shell: ./autogen.sh && ./configure && make -j{{ ansible_processor_vcpus }}
          chdir={{ build_directory }}/pointcloud-{{ pointcloud_version }}
 
 - shell: make install
@@ -153,7 +153,7 @@
 - shell: tar -xvf PDAL-{{ pdal_version }}.tar.gz
          chdir={{ build_directory }}
 
-- shell: cmake -DBUILD_PLUGIN_PCL=ON . && make -j{{ ansible_processor_cores }}
+- shell: cmake -DBUILD_PLUGIN_PCL=ON . && make -j{{ ansible_processor_vcpus }}
          chdir={{ build_directory }}/PDAL-{{ pdal_version }}
 
 - shell: make install
