@@ -11,6 +11,9 @@ addons:
     packages:
     - python-pip
 
+before_install:
+  - sudo /etc/init.d/postgresql stop
+
 install:
   # Install ansible
   - pip install ansible
