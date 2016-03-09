@@ -4,19 +4,21 @@ galaxy_info:
   description: This role installs Postgis with 3D capabilities (sfcgal) plus pointcloud and PDAL
   company: Oslandia
   license: GPLv3
-  min_ansible_version: 1.8
+  min_ansible_version: 1.9
 
   platforms:
     - name: Debian
       versions:
-        - sid
+        - unstable
         - jessie
     - name: Ubuntu
       versions:
         - trusty
 
-  categories:
-    - database
+  galaxy_tags:
+    - postgresql
+    - postgis
+    - 3D
 
 dependencies: []
 

@@ -26,10 +26,11 @@
   action: apt pkg={{ item }} state=present
   become: yes
   with_items:
-    - postgresql-9.4
-    - postgresql-server-dev-9.4
+    - postgresql-9.5
+    - postgresql-server-dev-9.5
     - build-essential
     - autoconf
+    - automake
     - cmake
     - docbook-mathml
     - docbook-xsl
@@ -76,16 +77,19 @@
            dest={{ build_directory }}
   when: ansible_distribution_release == "trusty"
 
-- shell: tar -Jxf CGAL-4.6.3.tar.xz
+- name: untar cgal
+  shell: tar -Jxf CGAL-4.6.3.tar.xz
         chdir={{ build_directory}}
         creates={{ build_directory}}/CGAL-4.6.3
   when: ansible_distribution_release == "trusty"
 
-- shell: cmake . && make -j{{ ansible_processor_vcpus }}
+- name: compile cgal
+  shell: cmake . && make -j{{ ansible_processor_vcpus }}
          chdir={{ build_directory }}/CGAL-4.6.3
   when: ansible_distribution_release == "trusty"
 
-- shell: make install
+- name: install cgal
+  shell: make install
          chdir={{ build_directory }}/CGAL-4.6.3
   become: yes
   when: ansible_distribution_release == "trusty"
@@ -95,67 +99,82 @@
 
 - name: get sfcgal code
   get_url: url=https://github.com/Oslandia/SFCGAL/archive/v{{ sfcgal_version }}.tar.gz
-           dest={{ build_directory }}/sfcgal.tar.gz
+           dest={{ build_directory }}/sfcgal-{{ sfcgal_version }}.tar.gz
 
-- shell: tar -xzf sfcgal.tar.gz
+- name: untar sfgcal archive
+  shell: tar -xzf sfcgal-{{ sfcgal_version }}.tar.gz
          chdir={{ build_directory}}
          creates={{ build_directory}}/SFCGAL-{{ sfcgal_version }}
 
-- shell: cmake . && make -j{{ ansible_processor_vcpus }}
+- name: compile compilation
+  shell: cmake . && make -j{{ ansible_processor_vcpus }}
          chdir={{ build_directory }}/SFCGAL-{{ sfcgal_version }}
 
-- shell: make install
+- name: install sfcgal
+  shell: make install
          chdir={{ build_directory }}/SFCGAL-{{ sfcgal_version }}
   become: yes
 
-- command: ldconfig
+
+- name: ldconfig
+  command: ldconfig
   become: yes
 
 ###### POSTGIS
 
-
-- get_url: url=http://download.osgeo.org/postgis/source/postgis-{{ postgis_version }}.tar.gz
+- name: getting postgis from osgeo
+  get_url: url=http://download.osgeo.org/postgis/source/postgis-{{ postgis_version }}.tar.gz
             dest={{ build_directory }}/
 
-- shell: tar -xzf postgis-{{ postgis_version }}.tar.gz
+- name: untar postgis
+  shell: tar -xzf postgis-{{ postgis_version }}.tar.gz
          chdir={{ build_directory }}
          creates={{ build_directory}}/postgis-{{ postgis_version }}
 
-- shell: ./configure && make
+- name: compile postgis
+  shell: ./configure && make
          chdir={{ build_directory }}/postgis-{{ postgis_version }}/
 
-- shell: make install
+- name: install postgis
+  shell: make install
          chdir={{ build_directory }}/postgis-{{ postgis_version }}/
   become: yes
 
 
 ###### POINTCLOUD
 
-- get_url: url=https://github.com/pgpointcloud/pointcloud/archive/v{{ pointcloud_version }}.tar.gz
+- get_url: url=https://github.com/pgpointcloud/pointcloud/archive/{{ pointcloud_version }}.tar.gz
            dest={{ build_directory }}/
 
-- shell: tar -xvf pointcloud-{{ pointcloud_version }}.tar.gz
+- name: untar pointcloud
+  shell: tar -xvf pointcloud-{{ pointcloud_version }}.tar.gz
          chdir={{ build_directory }}
          creates={{ build_directory}}/pointcloud-{{ pointcloud_version }}
 
-- shell: ./autogen.sh && ./configure && make -j{{ ansible_processor_vcpus }}
+- name: compile pointcloud
+  shell: ./autogen.sh && ./configure && make -j{{ ansible_processor_vcpus }}
          chdir={{ build_directory }}/pointcloud-{{ pointcloud_version }}
 
-- shell: make install
+- name: install pointcloud
+  shell: make install
          chdir={{ build_directory }}/pointcloud-{{ pointcloud_version }}
   become: yes
 
 ###### PDAL
 
-- get_url: url=https://github.com/PDAL/PDAL/archive/{{ pdal_version }}.tar.gz
+- name: getting pdal
+  get_url: url=https://github.com/PDAL/PDAL/archive/{{ pdal_version }}.tar.gz
            dest={{ build_directory }}/
 
-- shell: tar -xvf PDAL-{{ pdal_version }}.tar.gz
+- name: untar pdal
+  shell: tar -xvf PDAL-{{ pdal_version }}.tar.gz
          chdir={{ build_directory }}
 
-- shell: cmake -DBUILD_PLUGIN_PCL=ON . && make -j{{ ansible_processor_vcpus }}
+- name: compile pdal
+  shell: cmake -DBUILD_PLUGIN_PCL=ON . && make -j{{ ansible_processor_vcpus }}
          chdir={{ build_directory }}/PDAL-{{ pdal_version }}
 
-- shell: make install
+- name: install pdal
+  shell: make install
          chdir={{ build_directory }}/PDAL-{{ pdal_version }}
   become: yes

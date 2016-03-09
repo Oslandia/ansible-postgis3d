@@ -1,20 +1,17 @@
 Ansible-PostGIS3D
 =================
 
-[![Shippable](https://img.shields.io/shippable/561e5c991895ca44741dc1c7.svg?style=flat&label=%C3%A7a%20passe%20ou%20%C3%A7a%20casse%20?)](https://app.shippable.com/projects/561e5c991895ca44741dc1c7)
-
-This role will install PostGIS with 3D support (sfcgal) and
-pointcloud extension.
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/Oslandia/ansible-postgis3d)
 
 Target Platform: tested on debian (jessie and sid) and ubuntu trusty
 
 Versions installed:
 
-- postgresql **9.4.4** from the official postgresql repository
-- sfcgal **1.2.2** compiled release from github
-- pointcloud **1.0.1** compiled release from github
-- pdal **1.0.1** compiled release from github
-- postgis **2.2.0** compiled release from osgeo
+- postgresql **9.5** from the official postgresql repository
+- sfcgal **1.3.0** compiled release from github
+- pointcloud **master** from github
+- pdal **1.1.0** compiled release from github
+- postgis **2.2.1** compiled release from osgeo
 
 Requirements
 ------------
