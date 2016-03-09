@@ -3,7 +3,7 @@ Ansible-PostGIS3D
 
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/Oslandia/ansible-postgis3d)
 
-Target Platform: tested on debian (jessie and sid) and ubuntu trusty
+Tested on debian (jessie, sid) and ubuntu trusty 1404
 
 Versions installed:
 
@@ -53,7 +53,7 @@ Now, it's your task to configure postgresql, pg_hba.conf etc...
 
 * If you want to checkout the role into your ansible role path for remote provisioning:
 
-        ansible-galaxy install ldgeo.postgis3d
+        ansible-galaxy install Oslandia.postgis3d
 
 License
 -------

@@ -11,16 +11,13 @@ addons:
     packages:
     - python-pip
 
-before_install:
-  - sudo /etc/init.d/postgresql stop
-
 install:
   # Install ansible
   - pip install ansible
-
+  # stop running postgresql
+  - sudo /etc/init.d/postgresql stop
   # Check ansible version
   - ansible --version
-
   # Create ansible.cfg with correct roles_path
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 
