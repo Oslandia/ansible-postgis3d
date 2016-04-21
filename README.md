@@ -1,4 +1,4 @@
-# ansible-postgis3d [![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/Oslandia/ansible-postgis3d)
+# ansible-postgis3d [![Build Status](https://travis-ci.org/Oslandia/ansible-postgis3d.svg?branch=master)](https://travis-ci.org/Oslandia/ansible-postgis3d)
 
 Tested on debian (jessie, sid) and ubuntu trusty 1404
 
